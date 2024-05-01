@@ -1,0 +1,112 @@
+import random  
+import time 
+hangman_figures = [
+    '''
+      +---+
+          |
+          |
+          |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      O   |
+          |
+          |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      O   |
+      |   |
+          |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      O   |
+     /|   |
+          |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      O   |
+     /|\\  |
+          |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      O   |
+     /|\\  |
+     /    |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      O   |
+     /|\\  |
+     / \\  |
+          |
+          |
+    =========
+    '''
+]
+word_list = ["python", "javascript", "hangman", "challenge", "computer", "software"]
+def get_random_word():
+    return random.choice(word_list)
+def play_hangman():
+    # Select a random word
+    word = get_random_word()
+    word_length = len(word)
+    guessed_letters = []
+    guessed_word = ['_' for _ in range(word_length)]
+    incorrect_guesses = 0
+    max_incorrect_guesses = len(hangman_figures) - 1
+    print("Welcome to Hangman!")
+    
+    while incorrect_guesses < max_incorrect_guesses and ''.join(guessed_word) != word:
+        print(hangman_figures[incorrect_guesses])
+        print(" ".join(guessed_word))
+        guess = input("Guess a letter: ").lower()
+        
+        if guess in guessed_letters:
+            print(f"You already guessed '{guess}'. Try again.")
+            continue
+        
+        guessed_letters.append(guess)
+
+        if guess in word:
+            for index in range(word_length):
+                if word[index] == guess:
+                    guessed_word[index] = guess
+            print(f"Good guess! '{guess}' is in the word.")
+        else:
+            incorrect_guesses += 1
+            print(f"Wrong guess! '{guess}' is not in the word.")
+        
+        time.sleep(0.5) 
+    if ''.join(guessed_word) == word:
+        print("Congratulations! You guessed the word:", word)
+    else:
+        print(hangman_figures[incorrect_guesses])
+        print("You lost! The word was:", word)
+    play_again = input("Do you want to play again? (yes/no): ").lower()
+    if play_again == 'yes':
+        play_hangman()
+    else:
+        print("Thanks for playing Hangman!")
+play_hangman()

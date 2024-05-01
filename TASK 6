@@ -1,0 +1,30 @@
+!pip install tk
+import tkinter as tk  
+import time  
+from threading import Thread 
+def update_timer(seconds, label):
+    while seconds >= 0:  
+        mins, secs = divmod(seconds, 60)  
+        timer_text = f"{mins:02d}:{secs:02d}"  
+        label.config(text=timer_text)  
+        time.sleep(1) 
+        seconds -= 1  
+def start_countdown():
+    try:
+        countdown_time = int(entry.get())  
+        if countdown_time < 0:
+            raise ValueError("Time must be positive.")
+        countdown_thread = Thread(target=update_timer, args=(countdown_time, timer_label))
+        countdown_thread.start() 
+    except ValueError as ve:
+        timer_label.config(text="Invalid input. Please enter a positive integer.")
+window = tk.Tk()
+window.title("Countdown Timer")
+entry = tk.Entry(window, width=10)  
+entry.pack(pady=10)
+start_button = tk.Button(window, text="Start Countdown", command=start_countdown)  
+start_button.pack(pady=10)
+timer_label = tk.Label(window, text="00:00", font=("Helvetica", 24))  
+timer_label.pack(pady=10)
+window.mainloop()  
+
